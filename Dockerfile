@@ -24,13 +24,12 @@ RUN composer install --optimize-autoloader --no-dev
 # Configurar permisos
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Instalar Node y construir los assets
-RUN npm install && npm run build
-
 # Crear el archivo SQLite si no existe y ajustar permisos
 RUN touch /var/www/html/database/database.sqlite \
     && chown -R www-data:www-data /var/www/html/database
-    
+
+# Instalar Node y construir los assets
+RUN npm install && npm run build
 
 # Configurar Apache para Laravel
 COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
@@ -39,4 +38,4 @@ COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
 EXPOSE 80
 
 # Iniciar servidor apache
-CMD ["apache2-foreground"]
+CMD php artisan migrate --force && apache2-foreground
