@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: laravel-livewire-app
+    env: docker
+    region: oregon
+    plan: free
+    branch: main
+    repo: https://github.com/ricardoceli-spec/livewire3
