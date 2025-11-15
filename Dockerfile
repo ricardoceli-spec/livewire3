@@ -27,6 +27,11 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Instalar Node y construir los assets
 RUN npm install && npm run build
 
+# Crear el archivo SQLite si no existe y ajustar permisos
+RUN touch /var/www/html/database/database.sqlite \
+    && chown -R www-data:www-data /var/www/html/database
+    
+
 # Configurar Apache para Laravel
 COPY ./docker/apache.conf /etc/apache2/sites-available/000-default.conf
 
